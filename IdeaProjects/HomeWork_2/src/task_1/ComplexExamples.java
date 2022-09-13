@@ -1,7 +1,11 @@
 package task_1;
 
+import com.sun.jdi.Value;
+
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.groupingBy;
 
@@ -100,8 +104,7 @@ public class ComplexExamples {
         System.out.println("Duplicate filtered, grouped by name, sorted by name and id:");
         System.out.println();
         Map<Integer, String> persons;
-        persons = addToHashMap(RAW_DATA);
-        persons = persons.entrySet()
+        persons = Stream.of(RAW_DATA).collect(Collectors.toMap(Person::getId,Person::getName,(p1,p2) -> p1)).entrySet()
                 .stream()
                 .sorted(Map.Entry.comparingByValue())
                 .collect(Collectors.toMap(
@@ -111,8 +114,8 @@ public class ComplexExamples {
                         LinkedHashMap::new
                 ));
 
-        System.out.println(persons.toString());
-        printPersons(persons);
+        persons.entrySet().forEach(System.out::println);
+        print(persons);
         /*
         Task1
             Убрать дубликаты, отсортировать по идентификатору, сгруппировать по имени
@@ -151,32 +154,13 @@ public class ComplexExamples {
 
 
     }
-
-    static HashMap<Integer, String> addToHashMap(Person[] rawData) {
-        HashMap<Integer, String> persons = new HashMap<>();
-        for (Person person : rawData) {
-            persons.put(person.getId(), person.getName());
+    public static void print(Map<Integer, String> persons){
+        ArrayList<String> list = new ArrayList<>(persons.values());
+        Map<String, Integer> output = new HashMap<>();
+        Set<String> unique = new HashSet<>(list);
+        for (String key : unique) {
+            output.put(key, Collections.frequency(list, key));
         }
-        return persons;
-    }
-
-    public static void printPersons(Map<Integer, String> persons) {
-        ArrayList<String> names = new ArrayList<>();
-        for (Map.Entry<Integer, String> new_Map : persons.entrySet()) {
-            if (!names.contains(new_Map.getValue())) {
-                names.add(new_Map.getValue());
-            }
-        }
-        int counter = 0;
-        for (String name : names) {
-            System.out.println("Key: " + name);
-            for (Map.Entry<Integer, String> new_Map : persons.entrySet()) {
-                if (name.equals(new_Map.getValue())) {
-                    counter++;
-                }
-            }
-            System.out.println("Value: " + counter);
-            counter = 0;
-        }
+        output.forEach((key, value) -> System.out.println("Key: " + key + "\n" + "Value: " + value));
     }
 }
