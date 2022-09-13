@@ -5,6 +5,20 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class Main {
+    static boolean[] expectancy = {
+            true,
+            true,
+            true,
+            true,
+            false,
+            false,
+            true,
+            true,
+            false,
+            true,
+            true
+    };
+    static int i = 0;
     public static void main(String[] args) {
         LinkedHashMap<String, String> strings = new LinkedHashMap<>();
         strings.put("car", "ca6$$#_rtwheel");
@@ -37,24 +51,10 @@ public class Main {
     }
 
     public static void tests(LinkedHashMap<String, String> strings) {
-        boolean[] expectancy = {
-                true,
-                true,
-                true,
-                true,
-                false,
-                false,
-                true,
-                true,
-                false,
-                true,
-                true
-        };
-        int i = 0;
-        for (Map.Entry<String, String> new_Map : strings.entrySet()) {
-            System.out.println("\"" + new_Map.getKey() + "\"" + " -> \"" + new_Map.getValue() + "\"" + " result:" + fuzzySearch(new_Map.getKey(), new_Map.getValue()));
-            assert fuzzySearch(new_Map.getKey(), new_Map.getValue()) == expectancy[i];
+        strings.forEach((key, value) -> {
+            System.out.println("\"" + key + "\"" + " -> \"" + value + "\"" + " result:" + fuzzySearch(key, value));
+            assert fuzzySearch(key, value) == expectancy[i];
             i++;
-        }
+        });
     }
 }
