@@ -21,19 +21,19 @@ public class Main {
         tests(strings);
     }
 
-    public static boolean fuzzySearch(String s1, String s2) {
+    public static boolean fuzzySearch(String targetString, String inputString) {
         int indexLetter = 0;
-        int counterS1Letters = 0;
-        for (int i = 0; i < s1.length(); i++) {
-            for (int j = indexLetter; j < s2.length(); j++) {
-                if (s1.charAt(i) == s2.charAt(j)) {
-                    indexLetter = j + 1;
-                    counterS1Letters++;
+        int counterTargetStringLetters = 0;
+        for (int i = 0; i < inputString.length(); i++) {
+                if (targetString.charAt(indexLetter) == inputString.charAt(i)) {
+                    indexLetter = indexLetter + 1;
+                    counterTargetStringLetters++;
+                }
+                if(indexLetter == targetString.length()){
                     break;
                 }
-            }
         }
-        return counterS1Letters == s1.length();
+        return counterTargetStringLetters == targetString.length();
     }
 
     public static void tests(LinkedHashMap<String, String> strings) {
